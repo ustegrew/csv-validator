@@ -104,14 +104,19 @@ When the method executes the validator will read the file (data) and stream `TRe
 See Class `org.ph394b8fe.TMain`
 
 
-##
-
-Roadmap:
+## Roadmap:
 
 * Make it work, i.e. finish incomplete classes.
 * Write documentation
 * Test it with various CSV corpuses in file and string form.
- 
+
 ### org.ph394b8fe - weird name...
 
-Yes, it's weird - the ph394b8fe is just ph and some random characters thrown together. I needed some name for the packages.
+Yes, it's weird - the ph394b8fe is just ph and some random characters thrown together. I needed some name for the packages. I'll fix that when I find a better name.
+
+## Dependencies
+
+We try to keep the dependencies to a minimum. 
+
+[ICU4J, version 61.1](http://site.icu-project.org), for determining the encoding of the csvData. Binary distro included here (lib/icu). You need to include it in your build path to build this project.
+
