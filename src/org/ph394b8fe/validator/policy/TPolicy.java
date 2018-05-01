@@ -13,7 +13,7 @@ import org.ph394b8fe.validator.policy.table.TRuleTable;
 import org.ph394b8fe.validator.result.TResult;
 
 /**
- * @author Reputaion.com
+ * @author Peter Hoppe
  *
  */
 public class TPolicy

@@ -2,9 +2,9 @@
 
 Does what it says on the label: Validates a given CSV file against a set of policies.
 
-* Validation scans data and streams the result to a client provided receptor. This makes it possible to scan very large amounts of data (e.g. 500 MB files). 
+* Validation scans data and streams the result to a client provided receptor. This makes it possible to scan very large amounts of data (e.g. 500 MB files) without hitting the memory limit. 
 * The program supports validation of files and Strings. 
-* This software is still in early alpha stage; it doesn't even fully compile yet as some of the classes aren't ready for use yet. 
+* This software is still in early alpha stage; it doesn't even fully compile yet as some of the classes aren't finished. 
 * Development won't implement many features, but concentrate on delivering a program that 'just works' and interoperates easily with the client (= works well with other software).
 * Program is designed for ease of use, i.e. get validation with minimum effort.
 
@@ -12,7 +12,7 @@ Does what it says on the label: Validates a given CSV file against a set of poli
 
 ### Design your policy
 
-The validator is driven by a policy which checks the given data according to a set of rules. To build a policy you need to create an object of type `org.ph394b8fe.validator.policy.TPolicy` and augment it with the necessary rules
+The validator is driven by a policy which checks the given data according to a set of rules. To build a policy you need to create an object of type `org.ph394b8fe.validator.policy.TPolicy` and augment it with the necessary rules. All rule parameters are passed as strings. This makes it easy to retrieve those parameters from elsewhere, e.g. a database, configuration files, ...
 
 ```java
 TPolicy policy = new TPolicy ()
@@ -111,4 +111,7 @@ Roadmap:
 * Make it work, i.e. finish incomplete classes.
 * Write documentation
 * Test it with various CSV corpuses in file and string form.
+ 
+### org.ph394b8fe - weird name...
 
+Yes, it's weird - the ph394b8fe is just ph and some random characters thrown together. I needed some name for the packages.
