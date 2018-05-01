@@ -12,8 +12,7 @@ import org.ph394b8fe.validator.policy.row.layout.TRuleRecordLayout;
 import org.ph394b8fe.validator.type.VType;
 
 /**
- *
- *
+ * Demonstrates an example how to use the CSV validator. 
  */
 public class TMain
 {
