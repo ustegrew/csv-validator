@@ -44,6 +44,15 @@ class TConstraint_Range
         return ret;
     }
     
+    public String toString ()
+    {
+        String ret;
+        
+        ret = "[" + fMin + ", " + fMax + "]";
+                
+        return ret;
+    }
+    
     public void setMax (int max)
     {
         if (max > fMin)

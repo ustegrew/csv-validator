@@ -4,10 +4,8 @@
 package org.ph394b8fe.validator.policy;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import org.ph394b8fe.validator.policy.row.TRuleRow;
-import org.ph394b8fe.validator.policy.row.global.empty_rows.TRuleEmptyLines;
 import org.ph394b8fe.validator.policy.row.layout.TRuleRecordLayout;
 import org.ph394b8fe.validator.policy.table.TRuleTable;
 import org.ph394b8fe.validator.result.TResult;

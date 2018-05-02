@@ -16,8 +16,12 @@
 
 package org.ph394b8fe.validator.type.impl.datetime_t;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
+import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.VType;
 
 /**
@@ -52,6 +56,23 @@ public class TTypeDateTime extends VType
     }
 
     /* (non-Javadoc)
+     * @see org.ph394b8fe.validator.type.VType#match(java.lang.String, org.ph394b8fe.validator.result.TResult, int, int, java.lang.String)
+     */
+    @Override
+    protected void _match(String value, TResult result, int iLine, int iColumn, String key, String msgIfValidationFails)
+    {
+        try
+        {
+            LocalDateTime.parse (value, fFormatter);
+            _addNotice (result, iLine, iColumn, key, "DateTime OK");
+        }
+        catch (DateTimeParseException e)
+        {
+            _addFatal (result, iLine, iColumn, key, msgIfValidationFails + ". Details: " + e.getMessage ());
+        }
+    }
+
+    /* (non-Javadoc)
      * @see org.ph394b8fe.validator.policy.type.VType#_withOption(java.lang.String, java.lang.String)
      */
     @Override
@@ -59,14 +80,13 @@ public class TTypeDateTime extends VType
     {
         if (key.equals (kKeyOptionFormat))
         {
-            fFormatter = DateTimeFormatter.ofPattern (value);
+            fFormatter = DateTimeFormatter.ofPattern (value).withResolverStyle (ResolverStyle.STRICT);
         }
         else
         {
             _croakUnknownOptionKey (key);
         }
     }
-
 }
 /*
 Example code: how to parse dates (Java tutorial)

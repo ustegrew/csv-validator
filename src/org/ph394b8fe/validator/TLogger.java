@@ -22,6 +22,7 @@ package org.ph394b8fe.validator;
  */
 public abstract class TLogger
 {
+    @SuppressWarnings("rawtypes")
     public static void LogInfo (Class cls, String message)
     {
         System.out.println (cls.getCanonicalName() + ": " + message);

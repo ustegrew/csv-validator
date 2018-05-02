@@ -16,6 +16,7 @@
 
 package org.ph394b8fe.validator.type.impl.void_t;
 
+import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.VType;
 
 /**
@@ -39,6 +40,26 @@ public class TTypeVoid extends VType
     @Override
     public void done ()
     {
+    }
+
+    /* (non-Javadoc)
+     * @see org.ph394b8fe.validator.type.VType#_match(java.lang.String, org.ph394b8fe.validator.result.TResult, int, int, java.lang.String, java.lang.String)
+     */
+    @Override
+    protected void _match(String value, TResult result, int iLine, int iColumn, String key, String msgIfValidationFails)
+    {
+        int len;
+        
+        len = value.length ();
+        if (len <= 0)
+        {
+            _addNotice (result, iLine, iColumn, key, "Field empty (OK)");
+        }
+        else
+        {
+            _addFatal (result, iLine, iColumn, key, msgIfValidationFails);
+        }
+        
     }
 
     /* (non-Javadoc)

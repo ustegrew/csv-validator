@@ -70,8 +70,33 @@ public abstract class VType
         fCanBeEmpty = false;
     }
     
-    public abstract void match  (String value, TResult result, int iLine, int iColumn, String key);
     public abstract void done   ();
+    
+    public void match (String value, TResult result, int iLine, int iColumn, String key, String msgIfValidationFails)
+    {
+        boolean doContinue;
+        int     len;
+        
+        len         = value.length ();
+        doContinue  = true;
+        if (len == 0)
+        {
+            if (fCanBeEmpty)
+            {
+                result.addNotice ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: Empty (OK)");
+            }
+            else
+            {
+                doContinue = false;
+                result.addFatal ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: Empty (not allowed here)");
+            }
+        }
+        
+        if (doContinue)
+        {
+            _match (value, result, iLine, iColumn, key, msgIfValidationFails);
+        }
+    }
     
     /**
      * @param string
@@ -92,27 +117,20 @@ public abstract class VType
         return this;
     }
     
-    protected boolean mayBeEmpty (String value, TResult result, int iLine, int iColumn, String key)
+    private void _setConstraintCanBeEmpty (String b)
     {
-        int     len;
-        boolean ret;
-        
-        len = value.length ();
-        ret = true;
-        if (len == 0)
+        if (b.equals (kValueFalse))
         {
-            if (fCanBeEmpty)
-            {
-                result.addNotice ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: Empty (OK)");
-            }
-            else
-            {
-                ret = false;
-                result.addFatal ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: Empty (not allowed here)");
-            }
+            fCanBeEmpty = false;
         }
-        
-        return ret;
+        else if (b.equals (kValueTrue))
+        {
+            fCanBeEmpty = true;
+        }
+        else
+        {
+            _croak ("Unknown value: " + b);
+        }
     }
     
     protected void _croak (String msg)
@@ -130,21 +148,17 @@ public abstract class VType
         throw new IllegalArgumentException ("Unknown option key: " + key);
     }
     
-    protected abstract void _withOption (String key, String value);
-
-    private void _setConstraintCanBeEmpty (String b)
+    protected void _addFatal (TResult result, int iLine, int iColumn, String key, String detail)
     {
-        if (b.equals (kValueFalse))
-        {
-            fCanBeEmpty = false;
-        }
-        else if (b.equals (kValueTrue))
-        {
-            fCanBeEmpty = true;
-        }
-        else
-        {
-            _croak ("Unknown value: " + b);
-        }
+        result.addFatal ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: " + detail);
     }
+    
+    protected void _addNotice (TResult result, int iLine, int iColumn, String key, String detail)
+    {
+        result.addNotice ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: " + detail);
+    }
+    
+    protected abstract void _match  (String value, TResult result, int iLine, int iColumn, String key, String msgIfValidationFails);
+
+    protected abstract void _withOption (String key, String value);
 }

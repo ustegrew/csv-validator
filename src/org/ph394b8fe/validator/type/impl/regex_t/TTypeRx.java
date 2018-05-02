@@ -18,6 +18,7 @@ package org.ph394b8fe.validator.type.impl.regex_t;
 
 import java.util.regex.Pattern;
 
+import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.VType;
 
 /**
@@ -29,7 +30,7 @@ public class TTypeRx extends VType
     public static final String                  kKey                    = "rx";
     public static final String                  kKeyOptionRegx          = "regx";
     
-    private Pattern                             fPattern;
+    private String                              fPattern;
     
     /**
      * @param key
@@ -49,6 +50,28 @@ public class TTypeRx extends VType
         {
             _croakMissingOption (kKeyOptionRegx);
         }
+        
+        /* Test: do we have a valid pattern (otherwise will throw exception)  */
+        Pattern.compile (fPattern);
+    }
+
+    /* (non-Javadoc)
+     * @see org.ph394b8fe.validator.type.VType#_match(java.lang.String, org.ph394b8fe.validator.result.TResult, int, int, java.lang.String)
+     */
+    @Override
+    protected void _match (String value, TResult result, int iLine, int iColumn, String key, String msgIfValidationFails)
+    {
+        boolean doesMatch;
+        
+        doesMatch = value.matches (fPattern);
+        if (doesMatch)
+        {
+            _addNotice (result, iLine, iColumn, key, "Field matches rule (OK)");
+        }
+        else
+        {
+            _addFatal (result, iLine, iColumn, key, msgIfValidationFails);
+        }
     }
 
     /* (non-Javadoc)
@@ -59,7 +82,7 @@ public class TTypeRx extends VType
     {
         if (key.matches (kKeyOptionRegx))
         {
-            fPattern = Pattern.compile (value);
+            fPattern = value;
         }
         else
         {

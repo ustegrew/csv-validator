@@ -61,6 +61,6 @@ public class TRuleField
      */
     public void match (String fieldValue, TResult result, int iLine)
     {
-        fType.match (fieldValue, result, iLine, fIColumn, fKey);
+        fType.match (fieldValue, result, iLine, fIColumn, fKey, fMsgIfValidationFails);
     }
 }

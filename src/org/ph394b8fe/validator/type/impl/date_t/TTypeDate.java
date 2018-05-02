@@ -48,6 +48,37 @@ public class TTypeDate extends VType
     
 
     /* (non-Javadoc)
+     * @see org.ph394b8fe.validator.policy.type.VType#done()
+     */
+    @Override
+    public void done ()
+    {
+        if (fFormatter == null)
+        {
+            _croakMissingOption (kKeyOptionFormat);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.ph394b8fe.validator.type.VType#doesMatch(java.lang.String)
+     */
+    @Override
+    protected void _match (String value, TResult result, int iLine, int iColumn, String key, String msgIfValidationFails)
+    {
+        try
+        {
+            LocalDate.parse (value, fFormatter);
+            _addNotice (result, iLine, iColumn, key, "Date OK");
+        }
+        catch (DateTimeParseException e)
+        {
+            _addFatal (result, iLine, iColumn, key, msgIfValidationFails + ". Details: " + e.getMessage());
+        }
+    }
+
+
+
+    /* (non-Javadoc)
      * @see org.ph394b8fe.validator.policy.type.VType#withOption(java.lang.String, java.lang.String)
      */
     @Override
@@ -60,44 +91,6 @@ public class TTypeDate extends VType
         else
         {
             _croakUnknownOptionKey (key);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see org.ph394b8fe.validator.type.VType#doesMatch(java.lang.String)
-     */
-    @Override
-    public void match (String value, TResult result, int iLine, int iColumn, String key)
-    {
-        boolean doContinue;
-        
-        doContinue = mayBeEmpty (value, result, iLine, iColumn, key);
-        
-        if (doContinue)
-        {
-            try
-            {
-                LocalDate.parse (value, fFormatter);
-                result.addNotice ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: OK");
-            }
-            catch (DateTimeParseException e)
-            {
-                result.addFatal ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: " + e.getMessage ());
-            }
-        }
-    }
-
-
-
-    /* (non-Javadoc)
-     * @see org.ph394b8fe.validator.policy.type.VType#done()
-     */
-    @Override
-    public void done ()
-    {
-        if (fFormatter == null)
-        {
-            _croakMissingOption (kKeyOptionFormat);
         }
     }
 }

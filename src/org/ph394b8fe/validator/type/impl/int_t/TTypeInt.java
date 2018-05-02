@@ -16,6 +16,7 @@
 
 package org.ph394b8fe.validator.type.impl.int_t;
 
+import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.VType;
 
 /**
@@ -47,22 +48,40 @@ public class TTypeInt extends VType
     }
     
     /* (non-Javadoc)
-     * @see org.ph394b8fe.validator.policy.type.VType#withOption(java.lang.String, java.lang.String)
+     * @see org.ph394b8fe.validator.type.VType#match(java.lang.String, org.ph394b8fe.validator.result.TResult, int, int, java.lang.String)
      */
     @Override
-    protected void _withOption (String key, String value)
+    protected void _match (String value, TResult result, int iLine, int iColumn, String key, String msgIfValidationFails)
     {
-        if (key.equals (kKeyOptionMin))
+        int         x;
+        boolean     doContinue;
+        boolean     isInRange;
+        
+        doContinue = true;
+        x          = 0;
+        if (doContinue)
         {
-            _setConstraintMin (value);
+            try
+            {
+                x = Integer.parseInt (value);
+            }
+            catch (NumberFormatException e)
+            {
+                _addFatal (result, iLine, iColumn, key, msgIfValidationFails + "Details: Syntax error: " + e.getMessage ());
+            }
         }
-        else if (key.equals (kKeyOptionMax))
+        
+        if (doContinue)
         {
-            _setConstraintMax (value);
-        }
-        else
-        {
-            _croakUnknownOptionKey (key);
+            isInRange = fRange.doesFulfillWith (x);
+            if (isInRange)
+            {
+                _addNotice (result, iLine, iColumn, key, "Integer OK");
+            }
+            else
+            {
+                _addFatal (result, iLine, iColumn, key, msgIfValidationFails);
+            }
         }
     }
     
@@ -80,5 +99,25 @@ public class TTypeInt extends VType
         
         _x = Integer.parseInt (x);
         fRange.setMin (_x);
+    }
+
+    /* (non-Javadoc)
+     * @see org.ph394b8fe.validator.policy.type.VType#withOption(java.lang.String, java.lang.String)
+     */
+    @Override
+    protected void _withOption (String key, String value)
+    {
+        if (key.equals (kKeyOptionMin))
+        {
+            _setConstraintMin (value);
+        }
+        else if (key.equals (kKeyOptionMax))
+        {
+            _setConstraintMax (value);
+        }
+        else
+        {
+            _croakUnknownOptionKey (key);
+        }
     }
 }
