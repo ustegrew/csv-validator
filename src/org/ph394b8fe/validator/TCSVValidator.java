@@ -2,20 +2,13 @@ package org.ph394b8fe.validator;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOError;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.MissingResourceException;
 
 import org.ph394b8fe.TReceptacleStdOut;
 import org.ph394b8fe.validator.policy.TPolicy;
 import org.ph394b8fe.validator.result.TResult;
-
-import com.ibm.icu.text.CharsetDetector;
-import com.ibm.icu.text.CharsetMatch;
 
 public class TCSVValidator
 {

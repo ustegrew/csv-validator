@@ -16,11 +16,17 @@
 
 package org.ph394b8fe.validator.type.impl.date_t;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
+import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.VType;
 
 /**
+ * 
+ * 
  * @author Peter Hoppe
  *
  */
@@ -38,6 +44,50 @@ public class TTypeDate extends VType
     {
         fFormatter = null;
     }
+    
+    
+
+    /* (non-Javadoc)
+     * @see org.ph394b8fe.validator.policy.type.VType#withOption(java.lang.String, java.lang.String)
+     */
+    @Override
+    protected void _withOption (String key, String value)
+    {
+        if (key.equals (kKeyOptionFormat))
+        {
+            fFormatter = DateTimeFormatter.ofPattern (value).withResolverStyle(ResolverStyle.STRICT);
+        }
+        else
+        {
+            _croakUnknownOptionKey (key);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see org.ph394b8fe.validator.type.VType#doesMatch(java.lang.String)
+     */
+    @Override
+    public void match (String value, TResult result, int iLine, int iColumn, String key)
+    {
+        boolean doContinue;
+        
+        doContinue = mayBeEmpty (value, result, iLine, iColumn, key);
+        
+        if (doContinue)
+        {
+            try
+            {
+                LocalDate.parse (value, fFormatter);
+                result.addNotice ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: OK");
+            }
+            catch (DateTimeParseException e)
+            {
+                result.addFatal ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: " + e.getMessage ());
+            }
+        }
+    }
+
+
 
     /* (non-Javadoc)
      * @see org.ph394b8fe.validator.policy.type.VType#done()
@@ -50,22 +100,6 @@ public class TTypeDate extends VType
             _croakMissingOption (kKeyOptionFormat);
         }
     }
-
-    /* (non-Javadoc)
-     * @see org.ph394b8fe.validator.policy.type.VType#withOption(java.lang.String, java.lang.String)
-     */
-    @Override
-    protected void _withOption (String key, String value)
-    {
-        if (key.equals (kKeyOptionFormat))
-        {
-            fFormatter = DateTimeFormatter.ofPattern (value);
-        }
-        else
-        {
-            _croakUnknownOptionKey (key);
-        }
-    }
 }
 
 /*
@@ -73,7 +107,8 @@ Example code: how to parse dates (Java tutorial)
 String input = ...;
 try {
     DateTimeFormatter formatter =
-                      DateTimeFormatter.ofPattern("MMM d yyyy");
+                      DateTimeFormatter.ofPattern("MMM d yyyy").withResolverStyle ( ResolverStyle.STRICT );
+                      
     LocalDate date = LocalDate.parse(input, formatter);
     System.out.printf("%s%n", date);
 }

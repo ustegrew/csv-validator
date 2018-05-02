@@ -211,7 +211,7 @@ public class TRuleRecordLayout
                 for (i = 0; i < fields.length; i++)
                 {
                     rule = fRulesFields.get (i);
-                    rule.match (fields [i], result);
+                    rule.match (fields [i], result, iLine);
                 }
             }
         }

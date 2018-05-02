@@ -57,23 +57,10 @@ public class TRuleField
     /**
      * @param string
      * @param result
+     * @param iLine 
      */
-    public void match (String fieldValue, TResult result)
+    public void match (String fieldValue, TResult result, int iLine)
     {
-        String  msg;
-        boolean doesMatch;
-        
-        doesMatch = fType.doesMatch (fieldValue);
-        msg       = fIColumn + "[" + fKey + "]: ";
-        if (doesMatch)
-        {
-            msg += "OK";
-            result.addNotice (msg); 
-        }
-        else
-        {
-            msg += fMsgIfValidationFails;
-            result.addFatal (msg);
-        }
+        fType.match (fieldValue, result, iLine, fIColumn, fKey);
     }
 }

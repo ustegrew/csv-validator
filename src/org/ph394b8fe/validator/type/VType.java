@@ -16,6 +16,7 @@
 
 package org.ph394b8fe.validator.type;
 
+import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.impl.date_t.TTypeDate;
 import org.ph394b8fe.validator.type.impl.int_t.TTypeInt;
 import org.ph394b8fe.validator.type.impl.regex_t.TTypeRx;
@@ -69,9 +70,8 @@ public abstract class VType
         fCanBeEmpty = false;
     }
     
-    public abstract boolean doesMatch (String value);
-    
-    public abstract void done ();
+    public abstract void match  (String value, TResult result, int iLine, int iColumn, String key);
+    public abstract void done   ();
     
     /**
      * @param string
@@ -90,6 +90,29 @@ public abstract class VType
         }
         
         return this;
+    }
+    
+    protected boolean mayBeEmpty (String value, TResult result, int iLine, int iColumn, String key)
+    {
+        int     len;
+        boolean ret;
+        
+        len = value.length ();
+        ret = true;
+        if (len == 0)
+        {
+            if (fCanBeEmpty)
+            {
+                result.addNotice ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: Empty (OK)");
+            }
+            else
+            {
+                ret = false;
+                result.addFatal ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: Empty (not allowed here)");
+            }
+        }
+        
+        return ret;
     }
     
     protected void _croak (String msg)
