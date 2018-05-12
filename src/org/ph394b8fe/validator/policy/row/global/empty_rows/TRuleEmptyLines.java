@@ -16,6 +16,7 @@
 
 package org.ph394b8fe.validator.policy.row.global.empty_rows;
 
+import org.ph394b8fe.validator.result.TIssue.EScope;
 import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.VType;
 
@@ -90,11 +91,11 @@ public class TRuleEmptyLines
         {
             if (fIsAllowedEmptyLine)
             {
-                result.addNotice ("Line " + iLine + ": Empty (Allowed)");
+                result.addNotice (EScope.kRow, null, iLine, 0, "Empty (OK)");
             }
             else
             {
-                result.addFatal ("Line " + iLine + ": Empty. Empty lines not allowed here");
+                result.addFatal (EScope.kRow, null, iLine, 0, "Empty (not allowed here)");
             }
         }
     }

@@ -36,9 +36,7 @@ public class TReceptacleStdOut implements IReceptacle
         int                 i;
         int                 n;
         TIssue              is;
-        ESeverity           sv;
         String              message;
-        Exception           exc;
         
         message         = "";
         n               = result.getNumIssues ();
@@ -47,26 +45,7 @@ public class TReceptacleStdOut implements IReceptacle
             for (i = 0; i < n; i++)
             {
                 is = result.getIssue (i);
-                sv = is.getSeverity ();
-                if (sv == ESeverity.kFatal)
-                {
-                    message = "Fatal: ";
-                    exc     = is.getException ();
-                    if (exc != null)
-                    {
-                        message += exc.toString () +
-                                   is.getDetails ();
-                    }
-                    
-                }
-                else if (sv == ESeverity.kWarning)
-                {
-                    message = "Warn: " + is.getDetails ();
-                }
-                else if (sv == ESeverity.kNotice)
-                {
-                    message = "Notice: " + is.getDetails ();
-                }
+                message = is.getAsString ();
                 System.out.println (message);
             }
         }

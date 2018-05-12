@@ -22,38 +22,53 @@ package org.ph394b8fe.validator.result;
  */
 public class TIssue
 {
+    public static enum EScope
+    {
+        kGlobal,
+        kRow,
+        kField
+    }
+    
     public static enum ESeverity
     {
+        kFatal,
         kNotice,
-        kWarning,
-        kFatal
+        kWarning
     }
 
     private String      fDetails;
     private Exception   fException;
+    private int         fLocationCol;
+    private String      fLocationFieldKey;
+    private int         fLocationLine;
+    private EScope      fScope;
     private ESeverity   fSeverity;
     
     /**
      * @param kfatal
      * @param details
      */
-    public TIssue (ESeverity severity, String details)
+    public TIssue (ESeverity severity, EScope scope, String fieldKey, int iLine, int iCol, String details)
     {
-        fSeverity   = severity;
-        fDetails    = details;
-        fException  = null;
+        fSeverity           = severity;
+        fScope              = scope;
+        fDetails            = details;
+        fException          = null;
+        _setLocation (scope, fieldKey, iLine, iCol);
     }
-
+    
     /**
      * @param kfatal
      * @param details
      * @param e
      */
-    public TIssue(ESeverity severity, String details, Exception e)
+    public TIssue (ESeverity severity, EScope scope, String fieldKey, int iLine, int iCol, String details, Exception e)
     {
-        fSeverity   = severity;
-        fDetails    = details;
-        fException  = e;
+        fSeverity           = severity;
+        fScope              = scope;
+        fDetails            = details;
+        fException          = e;
+        _setLocation (scope, fieldKey, iLine, iCol);
     }
     
     public String getAsString ()
@@ -64,17 +79,33 @@ public class TIssue
         switch (fSeverity)
         {
             case kFatal:
-                ret += "ERROR: " + fDetails;
+                ret += "ERROR";
                 break;
             case kNotice:
-                ret += "NOTICE: " + fDetails;
+                ret += "NOTICE";
                 break;
             case kWarning:
-                ret += "WARN: " + fDetails;
+                ret += "WARN";
                 break;
             default:
-                ret += fDetails;
         }
+        
+        ret += " ";
+        
+        switch (fScope)
+        {
+            case kGlobal:
+                ret += "(global)";
+                break;
+            case kRow:
+                ret += "(Line: " + fLocationLine + ")";
+                break;
+            case kField:
+                ret += "(Line: " + fLocationLine + ", Col: " + fLocationCol + ", Key:" + fLocationFieldKey + ")";
+                break;
+        }
+        
+        ret += ": " + fDetails;
         
         if (fException != null)
         {
@@ -94,8 +125,45 @@ public class TIssue
         return fException;
     }
     
+    public String getKey ()
+    {
+        return fLocationFieldKey;
+    }
+    
+    public int getLine ()
+    {
+        return fLocationLine;
+    }
+    
+    public int getRow ()
+    {
+        return fLocationCol;
+    }
+    
+    public EScope getScope ()
+    {
+        return fScope;
+    }
+    
     public ESeverity getSeverity ()
     {
         return fSeverity;
+    }
+    
+    private void _setLocation (EScope scope, String fieldKey, int iLine, int iCol)
+    {
+        switch (scope)
+        {
+            case kGlobal:
+                fLocationFieldKey   = null;
+                fLocationLine       = -1;
+                fLocationCol        = -1;
+                break;
+            case kRow:
+                fLocationFieldKey   = fieldKey;
+                fLocationLine       = iLine;
+                fLocationCol        = iCol;
+                break;
+        }
     }
 }

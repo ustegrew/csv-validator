@@ -13,6 +13,12 @@ import org.ph394b8fe.validator.type.VType;
 
 /**
  * Demonstrates an example how to use the CSV validator. 
+ * 
+ * Example file, courtesy https://mockaroo.com
+ * id,first_name,last_name,email,gender,ip_address
+ * 1,Pavel,Sturgeon,psturgeon0@infoseek.co.jp,Male,17.168.21.94
+ * Path: /home/peter/Documents/dev/csv-validator-assets/csv/mock-data-no-bom.csv
+ * Path: /home/peter/Documents/dev/csv-validator-assets/csv/mock-data-with-bom.csv
  */
 public class TMain
 {
@@ -26,40 +32,46 @@ public class TMain
         policy = new TPolicy ()
                 .withEncoding       ("UTF-8")
                 .withDelimiter      (",")
-                .withEmptyLines     ("true")
+                .withEmptyLines     ("false")
                 .withHeaderAtLine   ("1")
                 .withLayout 
                 (
                     new TRuleRecordLayout ()
                         .withField      
                         (
-                            "ID",
+                            "id",
                             VType.createInstance ("int").withOption ("min", "1"),
                             "ID must be an integer >= 1"
                         )
                         .withField
                         (
-                            "",
-                            VType.createInstance ("void"),
-                            "Second field must be empty"
+                            "first_name",
+                            VType.createInstance ("rx").withOption ("regx", "^[A-Z][a-zA-Z]+$"),
+                            "First name must start with an upper case letter and continue with lower case letters"
                         )
                         .withField
                         (
-                            "FIRST_NAME",
-                            VType.createInstance ("rx").withOption ("canBeEmpty", "true").withOption ("regx", "[a-zA-Z]+"),
-                            "FIRST_NAME: Only lower and upper case characters, can be empty"
+                            "last_name",
+                            VType.createInstance ("rx").withOption ("regx", "^[A-Z][a-zA-Z]+$"),
+                            "Last name must start with an upper case letter and continue with lower case letters"
                         )
                         .withField
                         (
-                            "SECOND_NAME",
-                            VType.createInstance ("rx").withOption ("regx", "[a-zA-Z]+").withOption ("canBeEmpty", "true"),
-                            "SECOND_NAME: Only lower and upper case characters, can be empty"
+                            "email",
+                            VType.createInstance ("rx").withOption ("regx", "^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+$"),
+                            "Must be a valid email address"
                         )
                         .withField
                         (
-                            "AGE",
-                            VType.createInstance ("int").withOption ("min", "1").withOption ("canBeEmpty", "true"),
-                            "AGE: Must be an integer >= 1, can be empty"
+                            "gender",
+                            VType.createInstance ("rx").withOption ("regx", "^(Male)|(Female)$"),
+                            "Gender must be either 'Male' or 'Female'"
+                        )
+                        .withField
+                        (
+                            "ip_address",
+                            VType.createInstance ("rx").withOption ("regx", "^\\d+\\.\\d+\\.\\d+\\.\\d+$"), // bad regex, but I'm impatient to see something. Need an IP address type.
+                            "IP address must be in quad format"
                         )
                 ).done ();
 

@@ -16,6 +16,7 @@
 
 package org.ph394b8fe.validator.type;
 
+import org.ph394b8fe.validator.result.TIssue.EScope;
 import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.impl.date_t.TTypeDate;
 import org.ph394b8fe.validator.type.impl.int_t.TTypeInt;
@@ -72,7 +73,7 @@ public abstract class VType
     
     public abstract void done   ();
     
-    public void match (String value, TResult result, int iLine, int iColumn, String key, String msgIfValidationFails)
+    public void match (String value, TResult result, int iLine, int iCol, String key, String msgIfValidationFails)
     {
         boolean doContinue;
         int     len;
@@ -83,18 +84,18 @@ public abstract class VType
         {
             if (fCanBeEmpty)
             {
-                result.addNotice ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: Empty (OK)");
+                _addNotice (result, iLine, iCol, key, "Empty (OK)");
             }
             else
             {
                 doContinue = false;
-                result.addFatal ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: Empty (not allowed here)");
+                _addFatal (result, iLine, iCol, key, "Empty (not allowed here)");
             }
         }
         
         if (doContinue)
         {
-            _match (value, result, iLine, iColumn, key, msgIfValidationFails);
+            _match (value, result, iLine, iCol, key, msgIfValidationFails);
         }
     }
     
@@ -150,12 +151,12 @@ public abstract class VType
     
     protected void _addFatal (TResult result, int iLine, int iColumn, String key, String detail)
     {
-        result.addFatal ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: " + detail);
+        result.addFatal (EScope.kField, key, iLine, iColumn, detail);
     }
     
     protected void _addNotice (TResult result, int iLine, int iColumn, String key, String detail)
     {
-        result.addNotice ("Line: " + iLine + ", Column " + iColumn + " [" + key + "]: " + detail);
+        result.addNotice (EScope.kField, key, iLine, iColumn, detail);
     }
     
     protected abstract void _match  (String value, TResult result, int iLine, int iColumn, String key, String msgIfValidationFails);

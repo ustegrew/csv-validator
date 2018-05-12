@@ -18,6 +18,7 @@ package org.ph394b8fe.validator.policy.row.layout;
 
 import java.util.ArrayList;
 
+import org.ph394b8fe.validator.result.TIssue.EScope;
 import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.VType;
 
@@ -198,7 +199,14 @@ public class TRuleRecordLayout
             if (n != fields.length)
             {
                 doContinue = false;
-                result.addFatal ("For line: " + iLine + ": Number of fields is " + fields.length + ", but should be " + n);
+                result.addFatal
+                (
+                    EScope.kRow,
+                    null,
+                    iLine,
+                    0,
+                    "Number of fields is " + fields.length + ", but should be " + n
+                );
             }
         }
         

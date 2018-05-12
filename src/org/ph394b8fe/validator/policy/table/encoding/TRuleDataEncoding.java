@@ -21,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.ph394b8fe.validator.result.TIssue.EScope;
 import org.ph394b8fe.validator.result.TResult;
 
 import com.ibm.icu.text.CharsetDetector;
@@ -60,6 +61,10 @@ public class TRuleDataEncoding
         {
             result.addFatal 
             (
+                EScope.kGlobal,
+                null,
+                0,
+                0,
                 "For given data: expected " +
                 "and actual encoding don't " +
                 "match: Expected: '" + fEncodingName + "'" + 
@@ -99,6 +104,10 @@ public class TRuleDataEncoding
             {
                 result.addFatal 
                 (
+                    EScope.kGlobal,
+                    null,
+                    0,
+                    0,
                     "For file '" + fileName + 
                     "': Expected and actual encoding " + 
                     "don't match: Expected: '" + fEncodingName + 
@@ -108,12 +117,27 @@ public class TRuleDataEncoding
         }
         catch (FileNotFoundException e)
         {
-            result.addFatal (e, "Could not find source file: '" + filePath + "'");
+            result.addFatal 
+            (
+                EScope.kGlobal,
+                null,
+                0,
+                0,
+                e,
+                "Could not find source file: '" + filePath + "'"
+            );
         }
         catch (IOException e)
         {
-            result.addFatal (e, "Could not read source file: '" + filePath + "'");
-            e.printStackTrace();
+            result.addFatal
+            (
+                EScope.kGlobal,
+                null,
+                0,
+                0,
+                e,
+                "Could not read source file: '" + filePath + "'"
+            );
         }
         finally
         {
@@ -126,7 +150,14 @@ public class TRuleDataEncoding
             }
             catch (IOException e)
             {
-                result.addWarning ("Failed to close source file: '" + filePath + "'");
+                result.addWarning
+                (
+                    EScope.kGlobal,
+                    null,
+                    0,
+                    0,
+                    "Failed to close source file: '" + filePath + "'"
+                );
             }
         }
     }

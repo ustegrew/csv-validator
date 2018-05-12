@@ -2,6 +2,7 @@ package org.ph394b8fe.validator.result;
 
 import java.util.ArrayList;
 
+import org.ph394b8fe.validator.result.TIssue.EScope;
 import org.ph394b8fe.validator.result.TIssue.ESeverity;
 
 public class TResult
@@ -23,11 +24,11 @@ public class TResult
     /**
      * @param string
      */
-    public void addFatal (String details)
+    public void addFatal (EScope scope, String fieldKey, int iLine, int iCol, String details)
     {
         TIssue      issue;
         
-        issue = new TIssue (TIssue.ESeverity.kFatal, details);
+        issue = new TIssue (TIssue.ESeverity.kFatal, scope, fieldKey, iLine, iCol, details);
         fIssues.add (issue);
         fNFatalities++;
     }
@@ -35,12 +36,13 @@ public class TResult
     /**
      * @param e
      * @param string
+     * TODO change signature: Move parameter e to the end of the param list.
      */
-    public void addFatal (Exception e, String details)
+    public void addFatal (EScope scope, String fieldKey, int iLine, int iCol, Exception e, String details)
     {
         TIssue      issue;
         
-        issue = new TIssue (TIssue.ESeverity.kFatal, details, e);
+        issue = new TIssue (TIssue.ESeverity.kFatal, scope, fieldKey, iLine, iCol, details, e);
         fIssues.add (issue);
         fNFatalities++;
     }
@@ -48,19 +50,19 @@ public class TResult
     /**
      * @param string
      */
-    public void addWarning (String details)
+    public void addWarning (EScope scope, String fieldKey, int iLine, int iCol, String details)
     {
         TIssue      issue;
         
-        issue = new TIssue (TIssue.ESeverity.kWarning, details);
+        issue = new TIssue (TIssue.ESeverity.kWarning, scope, fieldKey, iLine, iCol, details);
         fIssues.add (issue);
     }
 
-    public void addNotice (String details)
+    public void addNotice (EScope scope, String fieldKey, int iLine, int iCol, String details)
     {
         TIssue      issue;
         
-        issue = new TIssue (ESeverity.kNotice, details);
+        issue = new TIssue (ESeverity.kNotice, scope, fieldKey, iLine, iCol, details);
         fIssues.add (issue);
     }
     

@@ -19,6 +19,7 @@ package org.ph394b8fe.validator.policy.row.global.header_at_line;
 import java.util.ArrayList;
 
 import org.ph394b8fe.validator.TLogger;
+import org.ph394b8fe.validator.result.TIssue.EScope;
 import org.ph394b8fe.validator.result.TResult;
 
 /**
@@ -146,7 +147,7 @@ public class TRuleHeaderAtLine
                 if (n != fields.length)
                 {
                     doContinue = false;
-                    result.addFatal ("For header line (" + iLine + "): Number of keys is " + fields.length + ", but should be " + n);
+                    result.addFatal (EScope.kRow, null, iLine, 0, "Header line. Number of keys is " + fields.length + ", but should be " + n);
                 }
             }
             
@@ -161,11 +162,11 @@ public class TRuleHeaderAtLine
                         iCol        = i + 1;
                         if (doesMatch)
                         {
-                            result.addNotice ("Header, column " + iCol + ": Got expected key '" + key + "'");
+                            result.addNotice (EScope.kField, key, iLine, iCol, "Header column: Got expected key '" + key + "'");
                         }
                         else
                         {
-                            result.addFatal ("Header, column " + iCol + ": Expect key '" + key + "', but got '" + fields [i] + "'");
+                            result.addFatal (EScope.kField, key, iLine, iCol, "Header column: Expect key '" + key + "', but got '" + fields [i] + "'");
                         }
                     }
                 }
