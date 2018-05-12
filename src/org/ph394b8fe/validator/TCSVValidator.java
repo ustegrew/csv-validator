@@ -2,10 +2,14 @@ package org.ph394b8fe.validator;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.input.BOMInputStream;
 import org.ph394b8fe.TReceptacleStdOut;
 import org.ph394b8fe.validator.policy.TPolicy;
 import org.ph394b8fe.validator.result.TResult;
@@ -52,6 +56,7 @@ public class TCSVValidator
     
     private void _process (File csvFile, IReceptacle receptacle) throws IOException
     {
+        BOMInputStream          bomIS;
         FileReader              inF;
         BufferedReader          inR;
         int                     iLine;
@@ -75,8 +80,17 @@ public class TCSVValidator
             inR      = null;
             try
             {
-                inF         = new FileReader     (csvFile);
-                inR         = new BufferedReader (inF);
+                bomIS       = new BOMInputStream 
+                              (
+                                  new FileInputStream (csvFile), 
+                                  false, 
+                                  ByteOrderMark.UTF_8, 
+                                  ByteOrderMark.UTF_16BE,
+                                  ByteOrderMark.UTF_16LE,
+                                  ByteOrderMark.UTF_32BE,
+                                  ByteOrderMark.UTF_32LE
+                              );
+                inR         = new BufferedReader (new InputStreamReader (bomIS, null)); // TODO So far, compiler error here.
                 line        = null;
                 iLine       = 0;
                 doContinue  = true;

@@ -88,7 +88,7 @@ public class TMain
         System.out.println("Validating file: " + canonicalPath);
         inFile    = new File (canonicalPath);
         validator = new TCSVValidator (policy);
-        receptor  = new TReceptacleStdOut ();
+        receptor  = new TReceptacleStdOut (false);
         try
         {
             validator.process (inFile, receptor);
@@ -106,7 +106,7 @@ public class TMain
         
         System.out.println("Validating csv data.");
         validator = new TCSVValidator (policy);
-        receptor  = new TReceptacleStdOut ();
+        receptor  = new TReceptacleStdOut (false);
         validator.process (csvData, receptor);
     }
 }

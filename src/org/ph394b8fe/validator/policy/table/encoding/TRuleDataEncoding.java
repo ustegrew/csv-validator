@@ -16,10 +16,12 @@
 
 package org.ph394b8fe.validator.policy.table.encoding;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.ph394b8fe.validator.result.TIssue.EScope;
 import org.ph394b8fe.validator.result.TResult;
@@ -75,7 +77,7 @@ public class TRuleDataEncoding
     
     public void match (File inFile, TResult result)
     {
-        FileInputStream                 inStream;
+        InputStream                     inStream;
         CharsetDetector                 detector;
         CharsetMatch                    match;
         String                          encFound;
@@ -88,7 +90,7 @@ public class TRuleDataEncoding
         inStream = null;
         try
         {
-            inStream = new FileInputStream (inFile);
+            inStream = new BufferedInputStream (new FileInputStream (inFile));
             detector = new CharsetDetector ();
             detector.setText (inStream);
             

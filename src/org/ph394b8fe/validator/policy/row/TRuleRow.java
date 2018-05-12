@@ -28,12 +28,19 @@ import org.ph394b8fe.validator.result.TResult;
  */
 public class TRuleRow
 {
+    private String                              fConfDelimiter;
+    private String                              fConfRuleEmptyLines;
+    private String                              fConfRuleHeaderAtLine;
     private TRuleEmptyLines                     fRuleEmptyLines;
     private TRuleHeaderAtLine                   fRuleHeaderAtLine;
     private TRuleRecordLayout                   fRuleRecordLayout;
 
     public TRuleRow ()
     {
+        fConfDelimiter              = null;
+        fConfRuleEmptyLines         = null;
+        fConfRuleHeaderAtLine       = null;
+        
         fRuleRecordLayout           = null;
         fRuleEmptyLines             = new TRuleEmptyLines   ();
         fRuleHeaderAtLine           = new TRuleHeaderAtLine ();
@@ -43,6 +50,33 @@ public class TRuleRow
     {
         ArrayList<String>       headerKeys;
         
+        if (fRuleRecordLayout == null)
+        {
+            throw new IllegalArgumentException ("No record layout defined. Did you call TPolicy::withLayout (...)?");
+        }
+        
+        if (fConfDelimiter == null)
+        {
+            throw new IllegalArgumentException ("No delimiter defined. Did you call TPolicy::withDelimiter (...)?");
+        }
+        
+        if (fConfRuleEmptyLines == null)
+        {
+            throw new IllegalArgumentException ("No empty line policy defined. Did you call TPolicy::withEmptyLines (...)?");
+        }
+        
+        if (fConfRuleHeaderAtLine != null)
+        {
+            fRuleHeaderAtLine.setLine           (fConfRuleHeaderAtLine);
+            fRuleRecordLayout.setHeaderLineNum  (fConfRuleHeaderAtLine);
+        }
+        
+        fRuleHeaderAtLine.setDelimiter          (fConfDelimiter);
+        fRuleRecordLayout.setDelimiter          (fConfDelimiter);
+        
+        fRuleEmptyLines.setSpecifics            (fConfRuleEmptyLines);
+        fRuleRecordLayout.setSpecsEmptyLines    (fConfRuleEmptyLines);
+
         fRuleRecordLayout.done ();
         headerKeys = fRuleRecordLayout.getHeaderKeys ();
         fRuleHeaderAtLine.setHeader (headerKeys);
@@ -91,20 +125,17 @@ public class TRuleRow
      */
     public void setConfDelimiter (String delimiter)
     {
-        fRuleHeaderAtLine.setDelimiter (delimiter);
-        fRuleRecordLayout.setDelimiter (delimiter);
+        fConfDelimiter = delimiter;
     }
 
     public void setConfRuleEmptyLines (String specs)
     {
-        fRuleEmptyLines.setSpecifics            (specs);
-        fRuleRecordLayout.setSpecsEmptyLines     (specs);
+        fConfRuleEmptyLines = specs;
     }
 
     public void setConfRuleHeaderAtLine (String iLineHeader)
     {
-        fRuleHeaderAtLine.setLine               (iLineHeader);
-        fRuleRecordLayout.setHeaderLineNum      (iLineHeader);
+        fConfRuleHeaderAtLine = iLineHeader;
     }
 
     /**

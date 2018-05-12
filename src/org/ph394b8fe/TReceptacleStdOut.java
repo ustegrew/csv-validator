@@ -27,6 +27,16 @@ import org.ph394b8fe.validator.result.TResult;
  */
 public class TReceptacleStdOut implements IReceptacle
 {
+    private boolean             fLogAll;
+    
+    /**
+     * 
+     */
+    public TReceptacleStdOut (boolean logAll)
+    {
+        fLogAll = logAll;
+    }
+    
     /* (non-Javadoc)
      * @see org.ph394b8fe.validator.TCSVValidator.IReceptacle#push(org.ph394b8fe.validator.TResult)
      */
@@ -36,6 +46,7 @@ public class TReceptacleStdOut implements IReceptacle
         int                 i;
         int                 n;
         TIssue              is;
+        ESeverity           sv;
         String              message;
         
         message         = "";
@@ -45,8 +56,20 @@ public class TReceptacleStdOut implements IReceptacle
             for (i = 0; i < n; i++)
             {
                 is = result.getIssue (i);
-                message = is.getAsString ();
-                System.out.println (message);
+                if (fLogAll)
+                {
+                    message = is.getAsString ();
+                    System.out.println (message);
+                }
+                else
+                {
+                    sv = is.getSeverity ();
+                    if (sv == ESeverity.kFatal)
+                    {
+                        message = is.getAsString ();
+                        System.out.println (message);
+                    }
+                }
             }
         }
     }

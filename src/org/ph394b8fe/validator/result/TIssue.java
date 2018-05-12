@@ -160,6 +160,11 @@ public class TIssue
                 fLocationCol        = -1;
                 break;
             case kRow:
+                fLocationFieldKey   = null;
+                fLocationLine       = iLine;
+                fLocationCol        = -1;
+                break;
+            case kField:
                 fLocationFieldKey   = fieldKey;
                 fLocationLine       = iLine;
                 fLocationCol        = iCol;
