@@ -16,6 +16,7 @@ import org.ph394b8fe.validator.result.TResult;
  */
 public class TPolicy
 {
+    private String                      fEncoding;
     private boolean                     fIsClean;
     private TRuleRow                    fRuleRow;
     private TRuleTable                  fRuleTable;
@@ -23,6 +24,7 @@ public class TPolicy
     
     public TPolicy ()
     {
+        fEncoding                       = null;
         fRuleRow                        = new TRuleRow ();
         fRuleTable                      = new TRuleTable ();
         fIsClean                        = false;
@@ -41,11 +43,19 @@ public class TPolicy
         return this;
     }
     
+    /**
+     * @return
+     */
+    public String getEncoding ()
+    {
+        return fEncoding;
+    }
+
     public boolean isClean ()
     {
         return fIsClean;
     }
-
+    
     /**
      * @param csvFile
      * @return
@@ -58,7 +68,7 @@ public class TPolicy
         
         return ret;
     }
-    
+
     public TResult matchGlobal (String data)
     {
         TResult ret;
@@ -110,6 +120,7 @@ public class TPolicy
      */
     public TPolicy withEncoding (String encodingName)
     {
+        fEncoding = encodingName;
         fRuleTable.setConfRuleFileEncoding (encodingName);
         
         return this;

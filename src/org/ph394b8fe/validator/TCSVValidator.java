@@ -59,6 +59,7 @@ public class TCSVValidator
         BOMInputStream          bomIS;
         FileReader              inF;
         BufferedReader          inR;
+        String                  encoding;
         int                     iLine;
         String                  line;
         boolean                 hasFatalities;
@@ -80,6 +81,7 @@ public class TCSVValidator
             inR      = null;
             try
             {
+                encoding    = fPolicy.getEncoding ();
                 bomIS       = new BOMInputStream 
                               (
                                   new FileInputStream (csvFile), 
@@ -90,7 +92,7 @@ public class TCSVValidator
                                   ByteOrderMark.UTF_32BE,
                                   ByteOrderMark.UTF_32LE
                               );
-                inR         = new BufferedReader (new InputStreamReader (bomIS, null)); // TODO So far, compiler error here.
+                inR         = new BufferedReader (new InputStreamReader (bomIS, encoding));
                 line        = null;
                 iLine       = 0;
                 doContinue  = true;
