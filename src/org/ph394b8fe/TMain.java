@@ -30,7 +30,7 @@ public class TMain
         TPolicy                 policy;
 
         policy = new TPolicy ()
-                .withEncoding       ("UTF-8")
+                .withEncoding       ("ISO-8859-1")
                 .withDelimiter      (",")
                 .withEmptyLines     ("false")
                 .withHeaderAtLine   ("1")
@@ -46,19 +46,19 @@ public class TMain
                         .withField
                         (
                             "first_name",
-                            VType.createInstance ("rx").withOption ("regx", "^[A-Z][a-zA-Z]+$"),
+                            VType.createInstance ("rx").withOption ("regx", "^[A-Z][a-zA-Z \\-.]+$"),
                             "First name must start with an upper case letter and continue with lower case letters"
                         )
                         .withField
                         (
                             "last_name",
-                            VType.createInstance ("rx").withOption ("regx", "^[A-Z][a-zA-Z]+$"),
+                            VType.createInstance ("rx").withOption ("regx", "^['a-zA-Z \\-.]+$"),
                             "Last name must start with an upper case letter and continue with lower case letters"
                         )
                         .withField
                         (
                             "email",
-                            VType.createInstance ("rx").withOption ("regx", "^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+$"),
+                            VType.createInstance ("email"),
                             "Must be a valid email address"
                         )
                         .withField

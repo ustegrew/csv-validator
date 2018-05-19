@@ -19,6 +19,7 @@ package org.ph394b8fe.validator.type;
 import org.ph394b8fe.validator.result.TIssue.EScope;
 import org.ph394b8fe.validator.result.TResult;
 import org.ph394b8fe.validator.type.impl.date_t.TTypeDate;
+import org.ph394b8fe.validator.type.impl.email_t.TTypeEMail;
 import org.ph394b8fe.validator.type.impl.int_t.TTypeInt;
 import org.ph394b8fe.validator.type.impl.regex_t.TTypeRx;
 import org.ph394b8fe.validator.type.impl.void_t.TTypeVoid;
@@ -52,6 +53,10 @@ public abstract class VType
         else if (key.equals (TTypeVoid.kKey))
         {
             ret = new TTypeVoid ();
+        }
+        else if (key.equals (TTypeEMail.kKey))
+        {
+            ret = new TTypeEMail ();
         }
         else
         {

@@ -8,5 +8,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/icu/icu4j-61_1_bin.jar"/>
 	<classpathentry kind="lib" path="lib/apache-commons-io/2.6/bin/commons-io-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/junit/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="lib/junit/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/antlr/gramtest-0.2.3-jar-with-dependencies.jar" sourcepath="/home/peter/Downloads/dev/lib/gramtest/target/generated-sources/antlr4"/>
+	<classpathentry kind="lib" path="lib/antlr/antlr-4.6-complete.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
