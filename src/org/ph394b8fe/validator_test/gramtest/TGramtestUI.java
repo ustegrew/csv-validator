@@ -48,20 +48,30 @@ public class TGramtestUI extends javax.swing.JFrame
     private javax.swing.JScrollPane                     jScrollPane1;
     
     private boolean                                     fIsRunning;
+    private StringBuilder                               fBuffer;
 
     /**
      * Creates new form TGramtestUI
      */
     public TGramtestUI (TGramtest host)
     {
+        fBuffer         = new StringBuilder ();
         fHost           = host;
         fIsRunning      = false;
         initComponents ();
     }
 
-    public void setText (String text)
+    public void addEntry (String entry)
     {
-        fTxtOutput.setText (text);
+        fBuffer.append (entry);
+        fBuffer.append ("\n");
+        fTxtOutput.setText (fBuffer.toString ());
+    }
+    
+    public void clearEntries ()
+    {
+        fBuffer.setLength (0);
+        fTxtOutput.setText ("");
     }
     
     private void _setTextRunButton ()
@@ -100,7 +110,7 @@ public class TGramtestUI extends javax.swing.JFrame
     {
         int value;
         
-        value = fSldRecursionDepth.getValue ();
+        value = fSldMaxLength.getValue ();
         fHost.notifyParamChangeMaxLength (value);
         fLblValueMaxLen.setText ("" + value);
     }
@@ -109,7 +119,7 @@ public class TGramtestUI extends javax.swing.JFrame
     {
         int value;
         
-        value = fSldRecursionDepth.getValue ();
+        value = fSldMinLength.getValue ();
         fHost.notifyParamChangeMinLength (value);
         fLblValueMinLen.setText ("" + value);
     }

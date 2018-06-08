@@ -18,8 +18,6 @@ package org.ph394b8fe.validator_test.gramtest;
 
 import java.io.File;
 
-import com.sourceclear.gramtest.TestWorker;
-
 /**
  * @author Peter Hoppe
  *
@@ -73,7 +71,15 @@ public class TGramtest
         {
             if (fPathGrammarFile != null)
             {
-                fRunner.exec (fPathGrammarFile, fRecursionDepth, fMinLength, fMaxLength);
+                try
+                {
+                    fGUI.clearEntries ();
+                    fRunner.exec (fPathGrammarFile, fRecursionDepth, fMinLength, fMaxLength);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -84,7 +90,6 @@ public class TGramtest
     public void notifyFileChanged (File chosenFile)
     {
         fPathGrammarFile = chosenFile.getAbsolutePath ();
-        
     }
 
     /**
@@ -92,8 +97,7 @@ public class TGramtest
      */
     public void notifyNewTestCase (String testCase)
     {
-        System.out.println (testCase);
-        
+        fGUI.addEntry (testCase);
     }
 
     /**
@@ -102,7 +106,6 @@ public class TGramtest
     public void notifyParamChangeMaxLength (int value)
     {
         fMaxLength = value;
-        
     }
 
     /**
@@ -111,7 +114,6 @@ public class TGramtest
     public void notifyParamChangeMinLength (int value)
     {
         fMinLength = value;
-        
     }
 
     /**
@@ -120,13 +122,10 @@ public class TGramtest
     public void notifyParamChangeRecursionDepth (int value)
     {
         fRecursionDepth = value;
-        
     }
 
     private void _showUI ()
     {
         fGUI.setVisible (true);
     }
-    
-    
 }

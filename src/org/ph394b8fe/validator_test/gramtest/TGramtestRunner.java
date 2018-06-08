@@ -18,6 +18,7 @@ package org.ph394b8fe.validator_test.gramtest;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
@@ -25,11 +26,13 @@ import com.sourceclear.gramtest.TestWorker;
 
 public class TGramtestRunner
 {
-    private TestWorker      fWorker;
-    private TGramtest       fHost;
+    private BlockingQueue<String>   fQueue;
+    private TestWorker              fWorker;
+    private TGramtest               fHost;
         
     public TGramtestRunner (TGramtest host)
     {
+        fQueue  = new SynchronousQueue<String> ();
         fWorker = null;
         fHost   = host;
     }
@@ -55,40 +58,42 @@ public class TGramtestRunner
         return ret;
     }
     
-    public boolean exec (String pathGrammarFile, int recursionDepth, int minLength, int maxLength)
+    public void exec (String pathGrammarFile, int recursionDepth, int minLength, int maxLength) throws Exception
     {
-        final BlockingQueue<String>     queue;
         InputStream                     inStr;
-        TestWorker                      worker;
-        boolean                         hasTerminated;
-        boolean                         ret;
+        Runnable                        observer;
         
-        ret = false;
-        try
-        {
-            inStr   = new FileInputStream               (new File (pathGrammarFile));
-            queue   = new SynchronousQueue<String>      ();
-            worker  = new TestWorker                    (inStr, queue, recursionDepth, minLength, maxLength);
+        inStr       = new FileInputStream               (new File (pathGrammarFile));
+        fQueue      = new SynchronousQueue<String>      ();
+        fWorker     = new TestWorker                    (inStr, fQueue, recursionDepth, minLength, maxLength);
 
-            new Thread (worker).start ();
-            
-            hasTerminated = false;
-            do
+        observer = new Runnable ()
+        {
+            @Override
+            public void run ()
             {
-                String testCase = (String) queue.take ();
-                fHost.notifyNewTestCase (testCase); 
-                hasTerminated = fWorker.hasTerminated ();
-            }
-            while (! hasTerminated);
-            
-            ret = true;
-        }
-        catch (Exception e)
-        {
-        }
+                boolean hasTerminated;
+                String  testCase;
+                
+                hasTerminated = false;
+                do
+                {
+                    try
+                    {
+                        testCase = (String) fQueue.take ();
+                        fHost.notifyNewTestCase (testCase); 
+                        hasTerminated = fWorker.hasTerminated ();
+                    }
+                    catch (InterruptedException e)
+                    {
+                    }
+                }
+                while (! hasTerminated);
 
-        fWorker = null;
-        
-        return ret;
+                fWorker = null;
+            }
+        };
+        new Thread (observer).start ();            
+        new Thread (fWorker).start ();
     }
 }
