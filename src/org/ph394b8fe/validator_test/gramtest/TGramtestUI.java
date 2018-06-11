@@ -339,6 +339,7 @@ public class TGramtestUI extends javax.swing.JFrame
 
         fTxtOutput.setColumns (20);
         fTxtOutput.setRows (5);
+        fTxtOutput.setFont (new java.awt.Font ("Monospaced", java.awt.Font.PLAIN, 12));
         jScrollPane1.setViewportView (fTxtOutput);
 
         fBtnRunStop.setText ("Run");
