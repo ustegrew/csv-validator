@@ -1,0 +1,9 @@
+<float_t>        ::= <digits> | <decpoint> <digits> | <sign> <decpoint> <digits> | <digits> <decpoint> <digits> | <sign> <digits> <decpoint> <digits>
+
+<digits>        ::= <digit> [ <digits> ]
+
+<decpoint>      ::= "."
+
+<sign>          ::= "-" | "+"
+
+<digit>         ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9

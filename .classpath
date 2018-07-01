@@ -12,5 +12,8 @@
 	<classpathentry kind="lib" path="lib/junit/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/antlr/gramtest-0.2.3-jar-with-dependencies.jar" sourcepath="/home/peter/Downloads/dev/lib/gramtest/target/generated-sources/antlr4"/>
 	<classpathentry kind="lib" path="lib/antlr/antlr-4.6-complete.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="/home/peter/bin/eclipse/plugins/org.evosuite.plugins.eclipse.deps_1.0.7.201806011952/lib/evosuite.jar"/>
+	<classpathentry kind="src" path="evosuite-tests"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

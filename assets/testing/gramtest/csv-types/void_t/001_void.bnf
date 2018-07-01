@@ -1,0 +1,5 @@
+<void_t>	::=	<whitespce> | <whitespce> { <void_t> }
+
+<whitespce>  ::= "" | " " | "\t" | "\n" | "\r"
+
+

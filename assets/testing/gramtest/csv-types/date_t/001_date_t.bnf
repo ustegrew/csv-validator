@@ -1,0 +1,15 @@
+<date_t>            ::= <yyyy> - <mm> - <dd>
+
+<dd>                ::= <digit02> <digit19>  |  <digit3> <digit01> 
+
+<mm>                ::= <digit0> <digit19>   |  <digit1> <digit02>
+
+<yyyy>              ::= <digit19> <digit09> <digit09> <digit09>
+
+<digit0>            ::= 0
+<digit1>            ::= 1
+<digit3>            ::= 3
+<digit01>           ::= 0 | 1
+<digit02>           ::= 0 | 1 | 2
+<digit19>           ::=     1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+<digit09>           ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
